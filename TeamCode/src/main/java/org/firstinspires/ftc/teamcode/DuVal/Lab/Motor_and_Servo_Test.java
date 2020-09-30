@@ -6,32 +6,28 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-//Class is used for testing a single motor, using trigger for variable power.
-//WITHOUT
-@TeleOp(name = "one motor test", group="twowheel")
-public class SingleMotor_ButtonToggle extends OpMode {
+import java.security.KeyStore;
+@TeleOp(name = "one motor and servo test", group="twowheel")
+public class Motor_and_Servo_Test extends OpMode {
     private DcMotor motor = null;
+    public Servo servoA = null;
     double r_trigger;
     double l_trigger;
-
     boolean forward;
 
     @Override
     public void init() {
-        motor = hardwareMap.dcMotor.get("motor");
+        motor = hardwareMap. dcMotor.get("motor");
         motor.setDirection(DcMotorSimple.Direction.FORWARD);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-
+        servoA = hardwareMap.servo.get("servoA");
+        servoA.setDirection(Servo.Direction.FORWARD);
 
         forward = true;
 
-        telemetry.addLine("Press 'a' to engage motor.");
-        telemetry.addLine("Press 'b' to stop motor.");
-        telemetry.addLine("Press d-pad up for motor to go forward");
-        telemetry.addLine("Press d-down up for motor to go reverse");
-        telemetry.update();
+
     }
 
     @Override
@@ -39,37 +35,28 @@ public class SingleMotor_ButtonToggle extends OpMode {
         if (gamepad1.a == true && forward == true) {
             motor.setPower(1);
         }
-// 1)
-//        Make motor go reverse? Valid values of motors are [-1, +1]
-        if(gamepad1.a == true && forward == false){
+        if (gamepad1.a == true && forward == false) {
             motor.setPower(-1);
         }
-
-        if(gamepad1.b == true){
+        if (gamepad1.b == true){
             motor.setPower(0);
         }
-
-
-        //2) Stop motor if press b
-
-
-
-
-
-
-        if (gamepad1.dpad_up == true) {
+        if  (gamepad1.dpad_up == true){
             forward = true;
         }
-
-        if (gamepad1.dpad_down == true) {
+        if (gamepad1.dpad_down == true){
             forward = false;
         }
-
+        if (gamepad1.x == true){
+            servoA.setPosition(0.2);
+        }
+        if (gamepad1.y == true){
+            servoA.setPosition(0.8);
+        }
         update_telemetry();
     }
 
-    public void update_telemetry () {
-        telemetry.addData("Forward mode? ", forward);
-        telemetry.addData("A being pressed? ", gamepad1.a);
+    private void update_telemetry() {
+        telemetry.addLine("Running servo");
     }
-}
+    }

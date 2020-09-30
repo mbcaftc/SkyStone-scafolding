@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.DuVal.Lab;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
-
+@TeleOp(name = "servo calibration")
 public class SingleServo_Callibrate extends OpMode {
 
     private Servo myServo = null;
@@ -25,7 +26,12 @@ public class SingleServo_Callibrate extends OpMode {
             servoPos = Range.clip(servoPos,0,1);
             telemetry.addLine("Increase Servo Pos!");
         }
-//        What about decrease servo position??
+
+        if (gamepad1.left_bumper){
+            servoPos -= incVal;
+            servoPos = Range.clip(servoPos, 0,  1);
+            telemetry.addLine( "Decrease Servo Pos!");
+        }
 
         myServo.setPosition(servoPos);
         updateTelemetry();
